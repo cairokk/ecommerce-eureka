@@ -46,8 +46,8 @@ jobs:
 
       - name: Tag da imagem com o URI do repositório
         run: |
-          docker tag eureka-service:latest 727169793826.dkr.ecr.us-east-1.amazonaws.com/ecommerce/eureka-service:latest
+          docker tag eureka-service:latest 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/eureka-service:latest
 
       - name: Push da imagem para o ECR
         run: |
-          docker push 727169793826.dkr.ecr.us-east-1.amazonaws.com/ecommerce/eureka-service:latest
+          docker push 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/eureka-service:latest
