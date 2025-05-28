@@ -2,6 +2,9 @@ version: "3.8"
 
 services:
 
+  # =======================
+  # Infraestrutura Kafka
+  # =======================
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
     container_name: zookeeper
@@ -35,3 +38,95 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
+  eureka-service:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/eureka-service:latest
+    container_name: eureka-service
+    ports:
+      - "8761:8761"
+
+  # =======================
+  # Observabilidade
+  # =======================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  # =======================
+  # Microserviços (ECR)
+  # =======================
+
+  pedido-service:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/pedidos:latest
+    container_name: pedido-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - kafka
+      - eureka-service
+
+  usuario-service:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/usuario:latest
+    container_name: usuario-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kafka
+      - eureka-service
+
+  produtos-service:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/produtos:latest
+    container_name: produtos-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - eureka-service
+
+  pagamento-service:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/pagamento:latest
+    container_name: pagamento-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - kafka
+      - eureka-service
+
+  gateway:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/gateway:latest
+    container_name: gateway
+    ports:
+      - "8084:8084"
+    depends_on:
+      - usuario-service
+      - produtos-service
+      - pedido-service
+      - pagamento-service
+      - eureka-service
+
+  frontend:
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/spa:latest
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+
+volumes:
+  grafana-storage:
