@@ -35,10 +35,3 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
-  eureka-service:
-    build: ./eureka
-    ports:
-      - "8761:8761"
-    container_name: eureka-service
-    depends_on:
-      - kafka
