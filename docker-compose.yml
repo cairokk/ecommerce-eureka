@@ -100,7 +100,7 @@ services:
       - eureka-service
 
   pagamento-service:
-    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/pagamento:latest
+    image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/pagamentos:latest
     container_name: pagamento-service
     ports:
       - "8085:8085"
