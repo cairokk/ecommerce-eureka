@@ -134,8 +134,6 @@ services:
     container_name: frontend
     ports:
       - "3000:3000"
-    env_file:
-      - ./envs/frontend.env
     depends_on:
       - gateway
 
