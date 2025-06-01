@@ -76,6 +76,8 @@ services:
     container_name: pedido-service
     ports:
       - "8082:8082"
+    env_file:
+      - ./envs/pedido-service.env
     depends_on:
       - kafka
       - eureka-service
@@ -85,6 +87,8 @@ services:
     container_name: usuario-service
     ports:
       - "8081:8081"
+    env_file:
+      - ./envs/usuario-service.env
     depends_on:
       - kafka
       - eureka-service
@@ -94,6 +98,8 @@ services:
     container_name: produtos-service
     ports:
       - "8083:8083"
+    env_file:
+      - ./envs/produtos-service.env
     depends_on:
       - kafka
       - eureka-service
@@ -103,6 +109,8 @@ services:
     container_name: pagamento-service
     ports:
       - "8085:8085"
+    env_file:
+      - ./envs/pagamento-service.env
     depends_on:
       - kafka
       - eureka-service
@@ -112,6 +120,8 @@ services:
     container_name: gateway
     ports:
       - "8084:8084"
+    env_file:
+      - ./envs/gateway-service.env
     depends_on:
       - usuario-service
       - produtos-service
