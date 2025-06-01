@@ -50,10 +50,10 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana:latest
@@ -71,7 +71,6 @@ services:
   # =======================
   # Microserviços (ECR)
   # =======================
-
   pedido-service:
     image: 727169793826.dkr.ecr.us-east-2.amazonaws.com/ecommerce/pedidos:latest
     container_name: pedido-service
