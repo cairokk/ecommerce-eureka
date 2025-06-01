@@ -2,9 +2,9 @@ name: Deploy Eureka no ECR
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ teste ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ teste ]
 
 jobs:
   build-and-push:
